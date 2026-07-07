@@ -16,12 +16,12 @@
 
 ```mermaid
 graph LR
-    A[Breakpoint] --> B[Software (INT 3)]
+    A[Breakpoint] --> B[Software]
     A --> C[Hardware]
     A --> D[Conditional]
-    B --> E[Mudah digunakan, mengubah biner]
-    C --> F[Register CPU, lebih tersembunyi]
-    D --> G[Berhenti hanya jika kondisi terpenuhi]
+    B --> E[Mudah digunakan]
+    C --> F[Register CPU]
+    D --> G[Kondisi Khusus]
 
 ```
 
@@ -31,33 +31,33 @@ graph LR
 
 ### 1. Software Breakpoint (F2)
 
-* **Mekanisme**: Debugger menimpa instruksi asli dengan opcode `0xCC`.
+* **Mekanisme**: Debugger menimpa instruksi asli dengan opcode khusus.
 * **Kelebihan**: Tidak terbatas jumlahnya.
-* **Kekurangan**: Terdeteksi oleh aplikasi yang memiliki *Anti-Debugging* (karena merusak integritas kode di memori).
+* **Kekurangan**: Terdeteksi oleh aplikasi yang memiliki proteksi anti-debugging.
 
 ### 2. Hardware Breakpoint
 
-* **Mekanisme**: Menggunakan register debug CPU (`DR0`-`DR7`).
-* **Kelebihan**: Tidak mengubah kode (bersifat *stealth*). Sangat efektif untuk memantau akses memori (bukan sekadar eksekusi).
+* **Mekanisme**: Menggunakan register debug CPU.
+* **Kelebihan**: Tidak mengubah kode asli. Sangat efektif untuk memantau akses memori.
 * **Kekurangan**: Terbatas (CPU biasanya hanya menyediakan 4 slot).
 
 ### 3. Conditional Breakpoint (Shift+F2)
 
-* **Skenario**: "Saya ingin berhenti hanya jika `EAX` bernilai `0`".
-* **Penerapan**: Sangat ampuh saat mencari *password check* atau *serial validation*. Alih-alih menekan `F9` ratusan kali, biarkan debugger berhenti hanya saat kondisi `True`.
+* **Skenario**: Berhenti hanya jika suatu register memiliki nilai tertentu.
+* **Penerapan**: Sangat ampuh saat mencari password atau serial key tanpa harus melakukan proses manual berulang kali.
 
 ---
 
 ## ⚠️ Professional Insight: Breakpoint Placement
 
 > **Strategi Penempatan**:
-> Jangan memasang breakpoint sembarangan. Selalu cari **API Calls** yang relevan (seperti `MessageBoxW` untuk melihat pesan error, atau `GetDlgItemText` untuk mengambil input pengguna). Pasang breakpoint di sana, dan kamu akan langsung berada di jantung logika program tersebut.
+> Jangan memasang breakpoint sembarangan. Selalu cari API Calls yang relevan. Pasang breakpoint di sana, dan kamu akan langsung berada di jantung logika program tersebut.
 
 ---
 
 ## 💡 Key Takeaway
 
-*Breakpoint adalah navigasi kamu di lautan kode. Kuasai penggunaan Hardware Breakpoint jika kamu menganalisis target yang memiliki proteksi anti-debug, dan gunakan Conditional Breakpoint untuk mempercepat proses pencarian kunci atau flag.*
+*Breakpoint adalah navigasi kamu di lautan kode. Kuasai penggunaan Hardware Breakpoint untuk target dengan proteksi, dan gunakan Conditional Breakpoint untuk mempercepat proses pencarian kunci.*
 
 ---
 
@@ -65,7 +65,3 @@ graph LR
 
 ```
 
----
-
-
-```
