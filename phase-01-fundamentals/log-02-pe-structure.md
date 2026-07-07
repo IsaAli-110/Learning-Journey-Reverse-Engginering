@@ -1,19 +1,75 @@
-# Log 02: Memahami Portable Executable (PE) Structure
 
-## Deskripsi
-Mempelajari format file `.exe` dan `.dll` pada sistem operasi Windows agar kita tahu bagaimana OS memuat program ke dalam memori.
+# 💾 Log 03: Memory Management
 
-## Komponen Utama PE Header
-1. **DOS Header**: Bagian awal yang berisi tanda tangan `MZ`.
-2. **NT Headers**: Berisi informasi penting seperti `File Header` (arsitektur CPU) dan `Optional Header` (Entry Point, Image Base).
-3. **Section Table**: Daftar bagian-bagian file (seperti `.text` untuk kode, `.data` untuk variabel global).
+> *"Memahami bagaimana program mengalokasikan dan mengelola memori di sistem operasi."*
 
-## Mengapa Ini Penting?
-Tanpa memahami struktur PE, kita tidak akan bisa mengetahui di mana sebuah program mulai dijalankan (*Entry Point*) atau di mana data tersimpan.
+---
 
-## Alat Analisis yang Digunakan
-* **PE-bear** atau **CFF Explorer**: Digunakan untuk melihat isi *header* secara visual.
-* **Dumpbin**: Perintah CLI untuk menampilkan informasi struktur file.
+## 🎯 Learning Objectives
+- [ ] Memahami perbedaan fungsi **Stack** vs **Heap**.
+- [ ] Mengenal konsep *Virtual Memory* dan *Address Space*.
+- [ ] Memahami *Buffer Overflow* sebagai celah keamanan utama.
 
-## Kesimpulan
-PE structure adalah peta jalan bagi *Reverse Engineer* untuk membedah bagaimana aplikasi Windows disusun dan diinisialisasi oleh sistem operasi.
+---
+
+## 🧠 Visualisasi Layout Memori
+Setiap proses memiliki "ruang pribadi" di memori yang disebut **Virtual Address Space**.
+
+```mermaid
+graph TD
+    A[High Memory] --> B[Stack - LIFO]
+    B --> C[Shared Libraries]
+    C --> D[Heap - Dynamic]
+    D --> E[.data - Global]
+    E --> F[.text - Code]
+    F --> G[Low Memory]
+
+```
+
+---
+
+## 📋 Perbandingan Stack vs Heap
+
+| Fitur | Stack | Heap |
+| --- | --- | --- |
+| **Alokasi** | Otomatis (oleh CPU) | Manual (`malloc`/`new`) |
+| **Ukuran** | Terbatas & Cepat | Sangat besar & Lambat |
+| **Keamanan** | Sering jadi target *Exploit* | Berisiko *Memory Leak* |
+| **Kecepatan** | Sangat Cepat | Lebih Lambat |
+
+---
+
+## 📝 Konsep Kunci
+
+### 1. Stack (LIFO)
+
+Tempat penyimpanan variabel lokal fungsi. Saat sebuah fungsi dipanggil, *Stack Frame* baru dibuat. Saat fungsi selesai, memori langsung dibersihkan.
+
+> **Pro-Tip:** Jika kamu melihat `ESP` atau `RSP` terus berubah, itu tandanya program sedang aktif melakukan pemanggilan fungsi (*Function Calls*).
+
+### 2. Heap (Dynamic)
+
+Tempat data yang ukurannya tidak diketahui saat *compile time* disimpan. Memori di sini tidak otomatis dibersihkan oleh CPU, sehingga developer harus memanggil `free` atau `delete`.
+
+### 3. Virtual Memory
+
+Sistem operasi memberikan ilusi bahwa setiap aplikasi memiliki akses ke seluruh memori, padahal sebenarnya sistem operasi memetakan memori virtual tersebut ke **RAM fisik**.
+
+---
+
+## ⚠️ Professional Insight: Memory Security
+
+> **The Danger Zone:** *Buffer Overflow* terjadi ketika program menulis data ke variabel di Stack tanpa memeriksa ukurannya. Akibatnya, data meluap dan menimpa *Return Address*. Inilah cara *attacker* mengendalikan alur program (EIP/RIP) untuk menjalankan kode berbahaya mereka.
+
+---
+
+### 💡 Key Takeaway
+
+*Memahami memori adalah kunci dari 'Dynamic Analysis'. Saat kamu melakukan debugging, selalu pantau isi Stack untuk melihat parameter yang dikirim antar fungsi.*
+
+---
+
+*Status: ✅ Complete*
+
+```
+

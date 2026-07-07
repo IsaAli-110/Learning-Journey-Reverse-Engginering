@@ -1,57 +1,89 @@
+Ah, saya paham maksudmu! Kalau kamu cuma melihat *file* `.md` di mode pengetikan biasa (raw text) di VS Code, memang kelihatannya "jelek" karena penuh dengan simbol seperti `#`, `*`, `|`, dan `>`.
+
+Keajaiban file `.md` (Markdown) baru akan terlihat kalau kamu mengaktifkan **Mode Preview** di VS Code.
+
+Ikuti langkah ini persis supaya hasilnya langsung terlihat keren:
+
+### Langkah 1: Copy Teks di Bawah Ini
+
+*(Klik tombol "Copy" di pojok kanan atas kotak kode di bawah ini, lalu paste ke file `log-01-architecture.md` milikmu)*
+
+```text
 # ⚙️ Log 01: Dasar Arsitektur Komputer
 
-> *"Memahami jantung dari eksekusi program: Bagaimana CPU 'berpikir' dan memproses instruksi."*
+> *"Reverse engineering bukan sekadar membaca kode, tapi memahami bagaimana prosesor 'berpikir' dan mengeksekusi instruksi di level paling dasar."*
 
 ---
 
 ## 🎯 Learning Objectives
-- [ ] Memahami siklus utama eksekusi instruksi (Fetch-Decode-Execute).
-- [ ] Mengenal peran penting register dalam penyimpanan data sementara.
-- [ ] Membedah perbedaan mendasar arsitektur x86 (32-bit) dan x64 (64-bit).
+- [ ] Memahami siklus **Fetch-Decode-Execute** sebagai jantung CPU.
+- [ ] Mengenal register sebagai media penyimpanan super cepat.
+- [ ] Membedah perbedaan arsitektur x86 dan x64 dalam konteks analisis.
 
 ---
 
-## 🔄 Visualisasi Konsep: Siklus CPU
-Berikut adalah gambaran sederhana bagaimana CPU mengolah perintah setiap detiknya:
+## 🔄 The CPU Cycle (Siklus Eksekusi)
+CPU tidak bekerja secara magis; ia mengikuti siklus instruksi yang sangat ketat:
 
 ```mermaid
 graph LR
-    A[Fetch] -->|Ambil Instruksi| B[Decode]
-    B -->|Terjemahkan| C[Execute]
-    C -->|Jalankan Operasi| D[Store/Writeback]
-    D -->|Simpan Hasil| A
+    A[Fetch] -->|Ambil dari Memori| B[Decode]
+    B -->|Terjemahkan Opcode| C[Execute]
+    C -->|Tulis Hasil| D[Writeback]
+    D --> A
 
-    🧠 Konsep Utama1. 
-    Register: "Memori" TercepatRegister adalah lokasi penyimpanan di dalam CPU yang digunakan untuk menyimpan data yang sedang diproses secara real-time.
-    RegisterFungsi Utama
-    EAX/RAXAccumulator (Hasil operasi matematika & return value)
-    EBX/RBXBase Register (Penyimpanan data umum)
-    ECX/RCXCounter Register (Untuk perulangan/looping)
-    EDX/RDXData Register (Input/Output & operasi perkalian)
-    ESP/RSPStack Pointer (Alamat paling atas di stack)
-    EIP/RIPInstruction Pointer (Alamat instruksi selanjutnya)
-    
-    2. Stack Pointer (ESP/RSP)
-    Bayangkan Stack sebagai tumpukan piring. ESP/RSP selalu menunjuk ke piring paling atas.Jika kita PUSH data, Stack Pointer akan berkurang (menunjuk ke bawah/atas tumpukan).Jika kita POP data, Stack Pointer akan bertambah.
-    
-    3. Instruksi Dasar (Assembly)
-    Instruksi adalah perintah spesifik yang dimengerti oleh CPU:
-    MOV Dest, Src : Menyalin nilai dari Source ke Destination.
-    PUSH Value    : Memasukkan data ke dalam Stack.POP Dest      : Mengambil data teratas dari Stack ke Destination.
-    ADD/SUB       : Operasi aritmatika dasar
-    
-    💡 Pro-Insight (Catatan Penting)
-    Penting untuk diingat: Pada arsitektur x64 (64-bit), ukuran register menjadi dua kali lipat dibanding x86 (32-bit).
-    EAX (32-bit) menjadi RAX (64-bit).
-    ESP (32-bit) menjadi RSP (64-bit).Selalu 
-    
-    periksa apakah program yang kamu analisis adalah 32-bit atau 64-bit sebelum memulai analisis, karena ini mengubah cara register digunakan!
-    Status: ✅ Selesai
+```
 
-    ---
+---
 
-### Tips Tambahan untuk Kamu:
-1.  **Diagram Mermaid:** Jika kamu menggunakan VS Code, pastikan kamu menginstall extension **"Markdown Preview Mermaid Support"**. Dengan begitu, diagram di atas akan langsung berubah menjadi gambar grafis yang keren di tampilan *preview* kamu.
-2.  **Konsistensi:** Gaya penulisan ini akan saya pakai untuk log-log berikutnya agar repositorimu terlihat sangat rapi.
+## 🧠 Komponen Utama: Register
 
-**Apakah log ini sudah cukup keren?** Kalau oke, silakan simpan (Ctrl+S) dan lanjut ke **Log 02** (Memory Model), atau ada bagian yang ingin kamu modifikasi lagi?
+Register adalah "memori" internal CPU yang paling krusial. Saat kita melakukan *Reverse Engineering*, inilah tempat utama kita memantau data yang sedang diproses.
+
+| Register | Nama Lengkap | Fungsi Utama |
+| --- | --- | --- |
+| **EAX/RAX** | Accumulator | Operasi Aritmatika & *Return Value* fungsi. |
+| **ESP/RSP** | Stack Pointer | Menunjuk ke alamat puncak *Stack*. |
+| **EBP/RBP** | Base Pointer | Referensi variabel lokal & argumen fungsi. |
+| **EIP/RIP** | Instruction Pointer | Menunjuk ke alamat instruksi selanjutnya. |
+
+---
+
+## 🏗️ Stack vs Register
+
+Bayangkan `Registers` adalah kantong celana kamu (sangat dekat & cepat), sedangkan `Stack` adalah tas ransel (menyimpan data dalam jumlah banyak untuk sementara waktu).
+
+* **PUSH**: Memasukkan data ke tas (Stack).
+* **POP**: Mengambil data dari tas (Stack).
+
+---
+
+## ⚠️ Professional Insight (Catatan Penting)
+
+> **Waspada 64-bit!** Jika kamu melihat register diawali dengan huruf **'R'** (Contoh: `RAX`, `RSP`, `RIP`), berarti program tersebut berjalan di arsitektur **64-bit**.
+> Jangan tertukar dengan **'E'** (seperti `EAX`), yang menandakan arsitektur **32-bit**. Salah mengenali ini akan membuat analisis kamu kacau balau!
+
+---
+
+### 💡 Key Takeaway
+
+*Analisis arsitektur adalah langkah pertama. Sebelum masuk ke kode yang kompleks, pastikan kamu tahu CPU mana yang sedang 'berbicara' (32-bit atau 64-bit).*
+
+---
+
+*Status: ✅ Complete*
+
+```
+
+### Langkah 2: Cara Melihat "Tampilan Kerennya" di VS Code
+Setelah kamu *paste* teks di atas ke VS Code, lakukan ini:
+
+1. Di VS Code, tekan tombol **`Ctrl + Shift + V`** (di Windows) secara bersamaan.
+2. Jendela baru akan terbuka di sebelah kanan yang menampilkan hasil *render* (visual asli) dari file Markdown tersebut. 
+3. Di sinilah teks yang tadinya penuh simbol akan berubah menjadi tabel yang rapi, teks tebal, garis pembatas, dan blok kutipan yang elegan!
+
+**Catatan Diagram:** Kalau diagram `mermaid` (yang ada gambar kotak dan panah siklus CPU) belum muncul gambarnya di VS Code, kamu tinggal install ekstensi bernama **"Markdown Preview Mermaid Support"** di VS Code kamu. Tapi jangan khawatir, saat kamu push ke **GitHub**, GitHub akan **otomatis** merender diagram tersebut dengan sangat rapi.
+
+Coba di-*paste* dan tekan `Ctrl + Shift + V` sekarang. Kasih tahu saya kalau tampilannya sudah sesuai harapanmu!
+
+```
