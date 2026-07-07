@@ -1,12 +1,12 @@
 # Fase 02: Static Inspection
 
-Fase ini berfokus pada analisis *biner* tanpa menjalankan program (*non-runnable analysis*). Tujuannya adalah mengumpulkan informasi sebanyak mungkin dari struktur file.
+Fase ini berfokus pada analisis *biner* tanpa menjalankan program.
 
 ## Daftar Materi
-- [ ] [Log 03: Disassembly Basics](./log-03-disassembly.md)
-- [ ] [Log 04: Imports & String Analysis](./log-04-imports.md)
+- [ ] [Log 01: Disassembly Basics](./log-01-disassembly.md)
+- [ ] [Log 02: Imports & String Analysis](./log-02-imports.md)
+- [ ] [Log 03: Hash Analysis](./log-03-hash-analysis.md)
+- [ ] [Log 04: Packer Detection](./log-04-packer-detection.md)
 
 ## Fokus Pembelajaran
-1. Membaca *Assembly code* menggunakan alat bantu.
-2. Menganalisis fungsi yang di-*import* (API Windows) untuk menebak perilaku aplikasi.
-3. Mencari *strings* (teks) yang tertanam dalam biner untuk menemukan petunjuk logika program.
+Melakukan observasi mendalam terhadap struktur file untuk memahami perilaku aplikasi sebelum eksekusi.
