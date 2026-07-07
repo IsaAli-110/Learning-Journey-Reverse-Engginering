@@ -1,14 +1,4 @@
-Ah, saya paham maksudmu! Kalau kamu cuma melihat *file* `.md` di mode pengetikan biasa (raw text) di VS Code, memang kelihatannya "jelek" karena penuh dengan simbol seperti `#`, `*`, `|`, dan `>`.
 
-Keajaiban file `.md` (Markdown) baru akan terlihat kalau kamu mengaktifkan **Mode Preview** di VS Code.
-
-Ikuti langkah ini persis supaya hasilnya langsung terlihat keren:
-
-### Langkah 1: Copy Teks di Bawah Ini
-
-*(Klik tombol "Copy" di pojok kanan atas kotak kode di bawah ini, lalu paste ke file `log-01-architecture.md` milikmu)*
-
-```text
 # ⚙️ Log 01: Dasar Arsitektur Komputer
 
 > *"Reverse engineering bukan sekadar membaca kode, tapi memahami bagaimana prosesor 'berpikir' dan mengeksekusi instruksi di level paling dasar."*
@@ -72,18 +62,5 @@ Bayangkan `Registers` adalah kantong celana kamu (sangat dekat & cepat), sedangk
 ---
 
 *Status: ✅ Complete*
-
-```
-
-### Langkah 2: Cara Melihat "Tampilan Kerennya" di VS Code
-Setelah kamu *paste* teks di atas ke VS Code, lakukan ini:
-
-1. Di VS Code, tekan tombol **`Ctrl + Shift + V`** (di Windows) secara bersamaan.
-2. Jendela baru akan terbuka di sebelah kanan yang menampilkan hasil *render* (visual asli) dari file Markdown tersebut. 
-3. Di sinilah teks yang tadinya penuh simbol akan berubah menjadi tabel yang rapi, teks tebal, garis pembatas, dan blok kutipan yang elegan!
-
-**Catatan Diagram:** Kalau diagram `mermaid` (yang ada gambar kotak dan panah siklus CPU) belum muncul gambarnya di VS Code, kamu tinggal install ekstensi bernama **"Markdown Preview Mermaid Support"** di VS Code kamu. Tapi jangan khawatir, saat kamu push ke **GitHub**, GitHub akan **otomatis** merender diagram tersebut dengan sangat rapi.
-
-Coba di-*paste* dan tekan `Ctrl + Shift + V` sekarang. Kasih tahu saya kalau tampilannya sudah sesuai harapanmu!
 
 ```
