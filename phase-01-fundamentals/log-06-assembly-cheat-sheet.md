@@ -1,6 +1,4 @@
-Silakan **Copy-Paste** ini ke file `log-06-assembly-cheat-sheet.md`:
 
-```markdown
 # 📜 Log 06: Assembly Cheat Sheet
 
 > *"Referensi cepat instruksi dasar untuk membedah logika biner dalam sekejap."*
